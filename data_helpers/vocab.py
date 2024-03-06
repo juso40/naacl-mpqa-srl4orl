@@ -35,7 +35,7 @@ class Vocab(object):
     def save(self, path):
         with open(path, 'w') as f:
             for i, w in enumerate(self.i2w):
-                print >> f, str(i) + '\t' + w.encode('utf-8')
+                print(str(i) + '\t' + w.encode('utf-8'), file=f)
 
     @classmethod
     def load(cls, path):

@@ -343,7 +343,7 @@ def get_annotations(argv):
                 assert sent_ds_id is not None
 
             if flag == 1:
-                print line
+                print(line)
                 continue
 
             if flag == 2:

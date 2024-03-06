@@ -1,3 +1,8 @@
+import sys
+from pathlib import Path
+sys.path.append(str((Path(__file__).parent.parent/"scp_repo").resolve()))
+print(sys.path)
+
 import codecs
 import logging
 from data_helpers.process_mpqa2_new import get_annotations
