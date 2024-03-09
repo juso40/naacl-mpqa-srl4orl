@@ -9,6 +9,7 @@ import logging
 import random
 import json
 import os
+from pathlib import Path
 
 PAD = "<PAD>"
 UNK = "<UNK>"
@@ -33,9 +34,9 @@ def word2vec_emb_vocab(vocabulary, dim, emb_type, model='mtl'):
         if model == 'stl':
             glove_file = "embeddings/glove/glove_" + str(dim) + "_w2vformat.txt"
 
-        w2v_model = KeyedVectors.load_word2vec_format(glove_file, binary=False)  # GloVe Model
+        w2v_model: KeyedVectors = KeyedVectors.load_word2vec_format(Path(glove_file).resolve(), binary=False)  # GloVe Model
 
-    w2v_vectors = w2v_model.syn0
+    w2v_vectors = w2v_model.vectors
 
     logging.info("building embeddings for this dataset...")
     vocab_size = len(vocabulary)
@@ -67,7 +68,7 @@ def word2vec_emb_vocab(vocabulary, dim, emb_type, model='mtl'):
 def get_emb_vocab(sentences, emb_type, dim, word_freq, model='mtl'):
     logging.info("Building vocabulary...")
     word_counts = dict(Counter(itertools.chain(*sentences)).most_common())
-    word_counts_prune = {k: v for k, v in word_counts.iteritems() if v >= word_freq}
+    word_counts_prune = {k: v for k, v in word_counts.items() if v >= word_freq}
     word_counts_list = zip(word_counts_prune.keys(), word_counts_prune.values())
 
     vocabulary_inv = [x[0] for x in word_counts_list]
@@ -680,6 +681,7 @@ def stl_orl_train_data_iter(orl_data, batch_size, vocabulary, n_epochs):
 
 
 def eval_data_iter(data, batch_size, vocabulary, srl_label_dict):
+    data = list(data)
     if len(data) % float(batch_size) == 0:
         num_batches = int(len(data) / batch_size)
     else:
