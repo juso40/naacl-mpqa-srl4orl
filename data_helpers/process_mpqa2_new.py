@@ -209,7 +209,7 @@ def label(entity_tuple, entity_tag, ds_dict, att_dict=None, flag=0, sent_ds_id=-
 
     entity_indices = []
     if start_entity != -1 and end_entity != -1:
-        entity_indices = range(start_entity, end_entity+1)
+        entity_indices = list(range(start_entity, end_entity+1))
         entity_tokenize = sentence_tokenized[start_entity:end_entity+1]
 
     if entity_indices:
