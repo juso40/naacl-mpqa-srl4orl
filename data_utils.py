@@ -277,6 +277,7 @@ def transform_orl_data(corpus, vocabulary, window_size, mode, exp_setup_id='new'
     m_all = []
     ds_indices_all = []
     sentences_original_all = []
+    attitudes_all = []
 
     # data_file = open('mpqa_files/examples_' + mode + '_' + str(fold) + '.txt', 'w')
     type_counts = defaultdict(int)
@@ -583,6 +584,7 @@ def transform_orl_data(corpus, vocabulary, window_size, mode, exp_setup_id='new'
                 ds_all.append(ds_vocab_ids)
                 ds_indices_all.append(ds_indices)
                 ds_len.append(len(ds_vocab_ids))
+                attitudes_all.append(attitudes)
 
                 '''                
                 sentence_str = ' '.join([vocabulary_inv[wid] for wid in sentence_vocab_ids])
@@ -625,9 +627,9 @@ def transform_orl_data(corpus, vocabulary, window_size, mode, exp_setup_id='new'
     # data_file.close()
 
     assert len(sentences_all) == len(labels_all) == len(ds_all) == len(ds_len) == len(ctx_all) == len(ctx_len) == len(
-        m_all)
+        m_all) == len(attitudes_all)
     return zip(sentences_all, labels_all, ds_all, ds_len, ctx_all, ctx_len,
-               m_all), ds_indices_all, sentences_original_all
+               m_all, attitudes_all), ds_indices_all, sentences_original_all
 
 
 def train_data_iter(srl_data, orl_data, batch_size, vocabulary, srl_label_dict, n_epochs):
