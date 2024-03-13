@@ -443,19 +443,21 @@ def transform_orl_data(corpus, vocabulary, window_size, mode, exp_setup_id='new'
                         for tid, atype in enumerate(atypes):
                             if att_not_found:
                                 if tid < 4:  # sentiment-pos, sentiment-neg, intention-pos, etc.
-                                    for polarity in ['pos', 'neg']:
-                                        atype_full = atype + '-' + polarity
-                                        if atype_full in ds_attitudes:
-                                            att_idx.append(ds_attitudes[atype_full])
-                                            attitudes.append(atype_full)
-                                            att_not_found = False
-                                            type_counts[atype_full] += 1
+                                    for attitude in ds_attitudes: # additional for loop to keep the order of pos/neg in tact
+                                        for polarity in ['pos', 'neg']:
+                                            atype_full = atype + '-' + polarity
+                                            if atype_full == attitude:
+                                                att_idx.append(ds_attitudes[atype_full])
+                                                attitudes.append(atype_full)
+                                                att_not_found = False
+                                                type_counts[atype_full] += 1
                                 else:
-                                    if atype in ds_attitudes:
-                                        att_idx.append(ds_attitudes[atype])
-                                        attitudes.append(atype)
-                                        att_not_found = False
-                                        type_counts[atype] += 1
+                                    for attitude in ds_attitudes:
+                                        if atype == attitude:
+                                            att_idx.append(ds_attitudes[atype])
+                                            attitudes.append(atype)
+                                            att_not_found = False
+                                            type_counts[atype] += 1
                         for aid in att_idx:
                             att = ds['att' + str(aid)]
 
